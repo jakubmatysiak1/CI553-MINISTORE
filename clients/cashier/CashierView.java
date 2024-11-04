@@ -21,7 +21,7 @@ public class CashierView implements Observer
   
   private static final String CHECK  = "Check";
   private static final String BUY    = "Buy";
-  private static final String BOUGHT = "Bought/Pay";
+  private static final String BOUGHT = "Bought";
 
   private final JLabel      pageTitle  = new JLabel();
   private final JLabel      theAction  = new JLabel();
@@ -35,6 +35,10 @@ public class CashierView implements Observer
   private StockReadWriter theStock     = null;
   private OrderProcessing theOrder     = null;
   private CashierController cont       = null;
+  
+  // filter button
+  private static final String SORT = "Sort";
+  private final JButton theBtSort = new JButton( SORT );
   
   /**
    * Construct the view
@@ -96,6 +100,12 @@ public class CashierView implements Observer
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible
     theInput.requestFocus();                        // Focus is here
+    
+    // sort ID's option button
+    theBtSort.setBounds(16, 25 + 60 * 2, 80, 40); 
+    theBtSort.addActionListener(                  
+    	      e -> cont.doSort() );
+    cp.add( theBtSort );
   }
 
   /**
