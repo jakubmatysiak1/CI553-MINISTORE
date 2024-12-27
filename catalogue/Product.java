@@ -24,6 +24,7 @@ public class Product implements Serializable
    * @param aPrice The price of the product
    * @param aQuantity The Quantity of the product involved
    */
+  
   public Product( String aProductNum, String aDescription,
                   double aPrice, int aQuantity )
   {
@@ -57,5 +58,4 @@ public class Product implements Serializable
   { 
     theQuantity = aQuantity;
   }
-
 }

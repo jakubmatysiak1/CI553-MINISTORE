@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Formatter;
-import java.util.Locale;
+import java.util.Locale;	
 
 /**
  * A collection of products,
@@ -58,6 +58,22 @@ public class Basket extends ArrayList<Product> implements Serializable
   public boolean add( Product pr )
   {                              
     return super.add( pr );     // Call add in ArrayList
+  }
+  
+  // functions to add, return and clear products from basket
+  // add functionality to betterBaskwet
+  // developed by jakub
+  
+  public void clear_basket() {
+      this.clear();
+  }
+  
+  public ArrayList<Product> getProducts() {
+      return new ArrayList<>(this);
+  }
+  
+  public void addProduct(Product product) {
+      this.add(product);
   }
 
   /**
