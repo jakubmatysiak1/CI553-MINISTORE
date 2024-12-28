@@ -9,7 +9,6 @@ import dbAccess.StockR;
 import dbAccess.StockRW;
 import orders.Order;
 
-
 /**
   * Provide access to middle tier components.
   * Now only one instance of each middle tier object is created

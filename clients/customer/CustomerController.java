@@ -36,7 +36,14 @@ public class CustomerController
   {
     model.doClear();
   }
-
+  
+  // method to fetch for suggestions
+  // developed by jakub
+  
+  public void fetchSuggestions(String partialInput) {
+	    String[] suggestions = model.getSuggestions(partialInput);
+	    view.displaySuggestions(suggestions);
+	}
   
 }
 

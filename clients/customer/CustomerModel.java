@@ -9,6 +9,9 @@ import middle.StockException;
 import middle.StockReader;
 
 import javax.swing.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -130,5 +133,21 @@ public class CustomerModel extends Observable
   {
     return new Basket();
   }
+  
+  // method to fetch suggestions based on query
+  // developed by jakub
+  
+  public String[] getSuggestions(String partialInput) {
+	    List<String> suggestions = new ArrayList<>();
+	    try {
+	        List<Product> products = theStock.getMatchingProducts(partialInput);
+	        for (Product product : products) {
+	            suggestions.add(product.getProductNum());
+	        }
+	    } catch (StockException e) {
+	        DEBUG.error("Error fetching suggestions: %s", e.getMessage());
+	    }
+	    return suggestions.toArray(new String[0]);
+	}
 }
 

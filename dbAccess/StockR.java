@@ -14,6 +14,8 @@ import middle.StockReader;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -171,5 +173,41 @@ public class StockR implements StockReader
     //DEBUG.trace( "DB StockR: getImage -> %s", filename );
     return new ImageIcon( filename );
   }
+  
+  // function to use a clause to match product numbers through input returning list of products
+  // developed by jakub
+  
+  @Override
+  public synchronized List<Product> getMatchingProducts(String partialInput) throws StockException {
+	  
+      List<Product> matchingProducts = new ArrayList<>();
+      try {
+          String query = "SELECT ProductTable.productNo, description, price, stockLevel " +
+                         "FROM ProductTable " +
+                         "JOIN StockTable ON ProductTable.productNo = StockTable.productNo " +
+                         "WHERE ProductTable.productNo LIKE ?";
 
+          PreparedStatement stmt = getConnectionObject().prepareStatement(query);
+          stmt.setString(1, partialInput + "%");
+          ResultSet rs = stmt.executeQuery();
+
+          while (rs.next()) {
+              Product product = new Product(
+                  rs.getString("productNo"),
+                  rs.getString("description"),
+                  rs.getDouble("price"),
+                  rs.getInt("stockLevel")
+              );
+              matchingProducts.add(product);
+          }
+          
+          rs.close();
+          stmt.close();
+          
+      } catch (SQLException e) {
+          throw new StockException("SQL getMatchingProducts: " + e.getMessage());
+      }
+      
+      return matchingProducts;
+  }
 }

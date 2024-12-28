@@ -7,6 +7,9 @@ import middle.MiddleFactory;
 import middle.StockReader;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
@@ -37,6 +40,12 @@ public class CustomerView implements Observer
   private Picture thePicture = new Picture(80,80);
   private StockReader theStock   = null;
   private CustomerController cont= null;
+  
+  // jlist and defaultlistmodel utilised for displaying suggestions
+  // developed by jakub
+  
+  private JList<String> suggestionList = new JList<>();
+  private DefaultListModel<String> suggestionListModel = new DefaultListModel<>();
 
   /**
    * Construct the view
@@ -97,7 +106,45 @@ public class CustomerView implements Observer
     
     rootWindow.setVisible( true );                  // Make visible);
     theInput.requestFocus();                        // Focus is here
+    
+    // suggestion list setup, initializing needed components
+    // developed by jakub
+   
+    suggestionList.setModel(suggestionListModel);
+    suggestionList.setBounds(110, 90, 270, 100);
+    cp.add(suggestionList);
+
+    suggestionList.addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting() && suggestionList.getSelectedValue() != null) {
+            theInput.setText(suggestionList.getSelectedValue());
+        }
+    });
+
+    theInput.getDocument().addDocumentListener(new DocumentListener() {
+        @Override
+        public void insertUpdate(DocumentEvent e) { updateSuggestions(); }
+        @Override
+        public void removeUpdate(DocumentEvent e) { updateSuggestions(); }
+        @Override
+        public void changedUpdate(DocumentEvent e) { updateSuggestions(); }
+    });
   }
+  
+  private void updateSuggestions() {
+	    String text = theInput.getText();
+	    if (text.length() > 0) {
+	        cont.fetchSuggestions(text);
+	    } else {
+	        suggestionListModel.clear();
+	    }
+	}
+
+	public void displaySuggestions(String[] suggestions) {
+	    suggestionListModel.clear();
+	    for (String suggestion : suggestions) {
+	        suggestionListModel.addElement(suggestion);
+	    }
+	}
 
    /**
    * The controller object, used so that an interaction can be passed to the controller
