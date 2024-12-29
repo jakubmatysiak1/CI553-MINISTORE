@@ -25,17 +25,31 @@ public class CashierController
    * Check interaction from view
    * @param pn The product number to be checked
    */
-  public void doCheck( String pn )
+  
+  // updated methods check and buy which include the quantity to pass through
+  // developed by jakub
+  
+  public void doCheck( String pn, String quantity_str)
   {
-    model.doCheck(pn);
+	  try {
+		  int quantity = Integer.parseInt(quantity_str.trim());
+		  model.doCheck(pn, quantity);
+	  } catch (NumberFormatException e) {
+		  view.update(null, "Invalid quantity: " + quantity_str);
+	  }
   }
 
    /**
    * Buy interaction from view
    */
-  public void doBuy()
+  public void doBuy(String quantity_str)
   {
-    model.doBuy();
+	  try {
+		  int quantity = Integer.parseInt(quantity_str.trim());
+		  model.doBuy(quantity);
+	  } catch (NumberFormatException e) {
+		  view.update(null, "Invalid quantity: " + quantity_str);
+	  }
   }
   
    /**

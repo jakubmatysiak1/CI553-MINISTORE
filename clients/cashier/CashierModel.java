@@ -57,18 +57,22 @@ public class CashierModel extends Observable
    * Check if the product is in Stock
    * @param productNum The product number
    */
-  public void doCheck(String productNum )
+  
+  // updated doCheck method to include dynamic quantity variable rather than static quantity
+  // developed by jakub
+  
+  public void doCheck(String productNum, int quantity )
   {
     String theAction = "";
     theState  = State.process;                  // State process
     pn  = productNum.trim();                    // Product no.
-    int    amount  = 1;                         //  & quantity
+    
     try
     {
       if ( theStock.exists( pn ) )              // Stock Exists?
       {                                         // T
         Product pr = theStock.getDetails(pn);   //  Get details
-        if ( pr.getQuantity() >= amount )       //  In stock?
+        if ( pr.getQuantity() >= quantity )       //  In stock?
         {                                       //  T
           theAction =                           //   Display 
             String.format( "%s : %7.2f (%2d) ", //
@@ -76,7 +80,7 @@ public class CashierModel extends Observable
               pr.getPrice(),                    //    price
               pr.getQuantity() );               //    quantity     
           theProduct = pr;                      //   Remember prod.
-          theProduct.setQuantity( amount );     //    & quantity
+          theProduct.setQuantity( quantity );     //    & quantity
           theState = State.checked;             //   OK await BUY 
         } else {                                //  F
           theAction =                           //   Not in Stock
@@ -98,10 +102,14 @@ public class CashierModel extends Observable
   /**
    * Buy the product
    */
-  public void doBuy()
+  
+  //updated doBuy method to include dynamic quantity variable rather than static quantity
+  // developed by jakub
+  
+  public void doBuy(int quantity)
   {
     String theAction = "";
-    int    amount  = 1;                         //  & quantity
+    
     try
     {
       if ( theState != State.checked )          // Not checked
@@ -111,13 +119,14 @@ public class CashierModel extends Observable
         boolean stockBought =                   // Buy
           theStock.buyStock(                    //  however
             theProduct.getProductNum(),         //  may fail              
-            theProduct.getQuantity() );         //
+            quantity );         //
         if ( stockBought )                      // Stock bought
         {                                       // T
           makeBasketIfReq();                    //  new Basket ?
+          theProduct.setQuantity(quantity);
           theBasket.add( theProduct );          //  Add to bought
           theAction = "Purchased " +            //    details
-                  theProduct.getDescription();  //
+                  theProduct.getDescription() + " x" + quantity;
         } else {                                // F
           theAction = "!!! Not in stock";       //  Now no stock
         }

@@ -31,6 +31,10 @@ public class CashierView implements Observer
   private final JButton     theBtCheck = new JButton( CHECK );
   private final JButton     theBtBuy   = new JButton( BUY );
   private final JButton     theBtBought= new JButton( BOUGHT );
+  
+  // input field for buying multiple products, quantity
+  // developed by jakub
+  private final JTextField  theQuantityInput = new JTextField();
 
   private StockReadWriter theStock     = null;
   private OrderProcessing theOrder     = null;
@@ -66,14 +70,17 @@ public class CashierView implements Observer
     pageTitle.setText( "Thank You for Shopping at MiniStrore" );                        
     cp.add( pageTitle );  
     
+    // updated code to pass quantity too
+    // developed by jakub
+    
     theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check Button
     theBtCheck.addActionListener(                   // Call back code
-      e -> cont.doCheck( theInput.getText() ) );
+      e -> cont.doCheck( theInput.getText(), theQuantityInput.getText() ) );
     cp.add( theBtCheck );                           //  Add to canvas
 
     theBtBuy.setBounds( 16, 25+60*1, 80, 40 );      // Buy button 
     theBtBuy.addActionListener(                     // Call back code
-      e -> cont.doBuy() );
+      e -> cont.doBuy(theQuantityInput.getText()) );
     cp.add( theBtBuy );                             //  Add to canvas
 
     theBtBought.setBounds( 16, 25+60*3, 80, 40 );   // Bought Button
@@ -85,7 +92,7 @@ public class CashierView implements Observer
     theAction.setText( "" );                        // Blank
     cp.add( theAction );                            //  Add to canvas
 
-    theInput.setBounds( 110, 50, 270, 40 );         // Input Area
+    theInput.setBounds( 110, 50, 130, 40 );         // Input Area
     theInput.setText("");                           // Blank
     cp.add( theInput );                             //  Add to canvas
 
@@ -96,6 +103,12 @@ public class CashierView implements Observer
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible
     theInput.requestFocus();                        // Focus is here
+    
+    // initialization of the quantity button
+    // developed by jakub
+    theQuantityInput.setBounds( 250, 50, 130, 40 );
+    theQuantityInput.setText("");                    
+    cp.add( theQuantityInput );  
   }
 
   /**
