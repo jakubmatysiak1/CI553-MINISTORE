@@ -15,6 +15,12 @@ import remote.RemoteStockRW_I;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 /**
  * Setup connection to the middle tier
@@ -54,7 +60,6 @@ public class F_StockRW extends F_StockR
    * @throws StockException if remote exception
    */
 
- 
   public boolean buyStock( String number, int amount )
          throws StockException
   {
@@ -112,6 +117,46 @@ public class F_StockRW extends F_StockR
       aR_StockRW = null;
       throw new StockException( "Net: " + e.getMessage() );
     }
+  }
+  
+  // method to establish connection to sql database
+  // developed by jakub
+  protected Connection getConnectionObject() throws SQLException {
+	    String url = "jdbc:derby:catshop.db";
+	    return DriverManager.getConnection(url);
+	}
+  
+  // method to add product to the sql database
+  // developed by jakub
+  @Override
+  public void addProduct(Product product) throws StockException {
+      try (Connection conn = getConnectionObject();
+           Statement stmt = conn.createStatement()) {
+
+          if (exists(product.getProductNum())) {
+              throw new StockException("Product already exists: " + product.getProductNum());
+          }
+
+          String insertProductSQL = String.format(
+              "INSERT INTO ProductTable (productNo, description, price, imagePath) VALUES ('%s', '%s', %.2f, '%s')",
+              product.getProductNum(),
+              product.getDescription(),
+              product.getPrice(),
+              product.getImagePath() != null ? product.getImagePath() : "NULL"
+          );
+          stmt.executeUpdate(insertProductSQL);
+
+          String insertStockSQL = String.format(
+              "INSERT INTO StockTable (productNo, stockLevel) VALUES ('%s', %d)",
+              product.getProductNum(),
+              product.getQuantity()
+          );
+          stmt.executeUpdate(insertStockSQL);
+
+          System.out.println("Product added successfully: " + product.getProductNum());
+      } catch (SQLException e) {
+          throw new StockException("Failed to add product: " + e.getMessage());
+      }
   }
 
 }

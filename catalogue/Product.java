@@ -16,6 +16,10 @@ public class Product implements Serializable
   private String theDescription;      // Description of product
   private double thePrice;            // Price of product
   private int    theQuantity;         // Quantity involved
+  
+  // path to the product image
+  // developed by jakub
+  private String imagePath; 
 
   /**
    * Construct a product details
@@ -25,14 +29,23 @@ public class Product implements Serializable
    * @param aQuantity The Quantity of the product involved
    */
   
-  public Product( String aProductNum, String aDescription,
-                  double aPrice, int aQuantity )
-  {
-    theProductNum  = aProductNum;     // Product number
-    theDescription = aDescription;    // Description of product
-    thePrice       = aPrice;          // Price of product
-    theQuantity    = aQuantity;       // Quantity involved
+  // updated constructors to pass information to other methods to create product
+  // developed by jakub
+  public Product(String aProductNum, String aDescription, double aPrice, String anImagePath) {
+      theProductNum = aProductNum;
+      theDescription = aDescription;
+      thePrice = aPrice;
+      imagePath = anImagePath;
+      theQuantity = 0;
   }
+  
+  public Product(String productNum, String description, double price, int quantity) {
+	    this.theProductNum = productNum;
+	    this.theDescription = description;
+	    this.thePrice = price;
+	    this.theQuantity = quantity;
+	    this.imagePath = null;
+	}
   
   public String getProductNum()  { return theProductNum; }
   public String getDescription() { return theDescription; }
@@ -57,5 +70,24 @@ public class Product implements Serializable
   public void setQuantity( int aQuantity )
   { 
     theQuantity = aQuantity;
+  }
+  
+  public String getImagePath() {
+      return imagePath;
+  }
+  
+  
+  // functionality to process image path
+  // developed by jakub
+  public void setImagePath(String anImagePath) {
+      imagePath = anImagePath;
+  }
+  
+  // functionality to convert product info to readable string
+  // developed by jakub
+  @Override
+  public String toString() {
+      return String.format("Product[ID=%s, Description=%s, Price=%.2f, Quantity=%d, Image=%s]",
+              theProductNum, theDescription, thePrice, theQuantity, imagePath);
   }
 }

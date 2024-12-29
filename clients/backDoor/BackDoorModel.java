@@ -149,5 +149,11 @@ public class BackDoorModel extends Observable
   {
     return new Basket();
   }
+  
+  // method to return the stock
+  // developed by jakub
+  public StockReadWriter getStock() {
+	    return theStock;
+	}
 }
 

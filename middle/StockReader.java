@@ -45,6 +45,5 @@ public interface StockReader
   
   // method to fetch matching partial product numbers 
   // developed by jakub
-  
   List<Product> getMatchingProducts(String partialInput) throws StockException;
 }

@@ -46,7 +46,13 @@ public class BackDoorController
   {
     model.doClear();
   }
-
   
+  
+  // new method to open a window for creating new prodcuts
+  // developed by jakub
+  public void openNewProduct() {
+	    NewProduct newProductWindow = new NewProduct(model);
+	    newProductWindow.setVisible(true);
+	}
 }
 

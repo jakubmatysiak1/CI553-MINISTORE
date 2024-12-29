@@ -176,7 +176,6 @@ public class StockR implements StockReader
   
   // function to use a clause to match product numbers through input returning list of products
   // developed by jakub
-  
   @Override
   public synchronized List<Product> getMatchingProducts(String partialInput) throws StockException {
 	  

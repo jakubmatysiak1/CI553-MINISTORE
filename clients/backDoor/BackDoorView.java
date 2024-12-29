@@ -31,6 +31,10 @@ public class BackDoorView implements Observer
   private final JButton     theBtRStock = new JButton( RESTOCK );
   private final JButton     theBtQuery = new JButton( QUERY );
   
+  // button to open and create new products
+  // developed by jakub
+  private final JButton theBtNew = new JButton("New");
+  
   private StockReadWriter theStock     = null;
   private BackDoorController cont= null;
 
@@ -98,6 +102,12 @@ public class BackDoorView implements Observer
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible
     theInput.requestFocus();                        // Focus is here
+    
+    // initialization of the new button
+    // developed by jakub
+    theBtNew.setBounds(16, 25 + 60 * 3, 80, 40);
+    theBtNew.addActionListener(e -> cont.openNewProduct());
+    cp.add(theBtNew);
   }
   
   public void setController( BackDoorController c )

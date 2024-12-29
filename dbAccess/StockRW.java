@@ -12,6 +12,7 @@ import debug.DEBUG;
 import middle.StockException;
 import middle.StockReadWriter;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 // There can only be 1 ResultSet opened per statement
@@ -27,10 +28,17 @@ public class StockRW extends StockR implements StockReadWriter
   /*
    * Connects to database
    */
-  public StockRW() throws StockException
-  {    
-    super();        // Connection done in StockR's constructor
-  }
+	public StockRW() throws StockException {
+	    super();
+
+	    // code to ensure the database column and rows are updated
+	    // developed by jakub
+	    try {
+	        ensureSchemaUpdated();
+	    } catch (SQLException e) {
+	        throw new StockException("Failed to update schema: " + e.getMessage());
+	    }
+	}
   
   /**
    * Customer buys stock, quantity decreased if sucessful.
@@ -82,13 +90,13 @@ public class StockRW extends StockR implements StockReadWriter
     }
   }
 
-
   /**
    * Modifies Stock details for a given product number.
    *  Assumed to exist in database.
    * Information modified: Description, Price
    * @param detail Product details to change stocklist to
    */
+  
   public synchronized void modifyStock( Product detail )
          throws StockException
   {
@@ -123,11 +131,71 @@ public class StockRW extends StockR implements StockReadWriter
           "  where productNo = '" + detail.getProductNum() + "'"
         );
       }
-      //getConnectionObject().commit();
       
     } catch ( SQLException e )
     {
       throw new StockException( "SQL modifyStock: " + e.getMessage() );
     }
   }
+  
+  // ensures no duplicate product exists and inserting the product into ProductTable
+  // developed by jakub
+  @Override
+  public synchronized void addProduct(Product product) throws StockException {
+      try {
+
+          if (exists(product.getProductNum())) {
+              throw new StockException("Product already exists: " + product.getProductNum());
+          }
+
+
+          String sqlProduct = String.format(
+              "INSERT INTO ProductTable (productNo, description, price, imagePath) VALUES ('%s', '%s', %.2f, '%s')",
+              product.getProductNum(),
+              product.getDescription(),
+              product.getPrice(),
+              product.getImagePath() != null ? product.getImagePath() : "NULL"
+          );
+          getStatementObject().executeUpdate(sqlProduct);
+
+
+          String sqlStock = String.format(
+              "INSERT INTO StockTable (productNo, stockLevel) VALUES ('%s', %d)",
+              product.getProductNum(),
+              product.getQuantity()
+          );
+          getStatementObject().executeUpdate(sqlStock);
+
+          System.out.println("Product added successfully: " + product.getProductNum());
+      } catch (SQLException e) {
+          throw new StockException("Failed to add product: " + e.getMessage());
+      }
+  }
+  
+  // ensures db contains the neccessary fields required for new product creation
+  // developed by jakub
+  private void ensureSchemaUpdated() throws SQLException {
+	    try {
+	        ResultSet rs = getConnectionObject()
+	            .getMetaData()
+	            .getColumns(null, null, "PRODUCTTABLE", "IMAGEPATH");
+	        
+	        if (!rs.next()) {
+	            getStatementObject().executeUpdate("ALTER TABLE ProductTable ADD COLUMN imagePath VARCHAR(255)");
+	            System.out.println("imagePath column added to ProductTable.");
+	            
+	        } else {
+	            System.out.println("imagePath column already exists in ProductTable.");
+	        }
+	        
+	    } catch (SQLException e) {
+	    	
+	        if (e.getSQLState().equals("42X14")) {
+	            System.out.println("imagePath column already exists.");
+	            
+	        } else {
+	            throw e;
+	        }
+	    }
+	}
 }

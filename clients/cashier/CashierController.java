@@ -28,7 +28,6 @@ public class CashierController
   
   // updated methods check and buy which include the quantity to pass through
   // developed by jakub
-  
   public void doCheck( String pn, String quantity_str)
   {
 	  try {

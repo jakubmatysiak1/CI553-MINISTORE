@@ -35,5 +35,7 @@ public interface StockReadWriter extends StockReader
    * @throws middle.StockException if issue
    */
   void modifyStock(Product detail) throws StockException;
-
+  
+  // method for adding new products and creating them
+  void addProduct(Product product) throws StockException;
 }
