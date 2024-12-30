@@ -37,6 +37,12 @@ public class CashierController
 		  view.update(null, "Invalid quantity: " + quantity_str);
 	  }
   }
+  
+  // method to clear the cashier using button
+  // developed by jakub
+  public void doClear() {
+	    model.doClear();
+	}
 
    /**
    * Buy interaction from view

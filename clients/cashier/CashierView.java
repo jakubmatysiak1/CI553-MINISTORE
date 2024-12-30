@@ -32,9 +32,10 @@ public class CashierView implements Observer
   private final JButton     theBtBuy   = new JButton( BUY );
   private final JButton     theBtBought= new JButton( BOUGHT );
   
-  // input field for buying multiple products, quantity
+  // input field for buying multiple products, quantity, and clearing the cashier
   // developed by jakub
   private final JTextField  theQuantityInput = new JTextField();
+  private final JButton theBtClear = new JButton("Clear");
 
   private StockReadWriter theStock     = null;
   private OrderProcessing theOrder     = null;
@@ -104,11 +105,15 @@ public class CashierView implements Observer
     rootWindow.setVisible( true );                  // Make visible
     theInput.requestFocus();                        // Focus is here
     
-    // initialization of the quantity button
+    // initialization of the buttons
     // developed by jakub
     theQuantityInput.setBounds( 250, 50, 130, 40 );
     theQuantityInput.setText("");                    
     cp.add( theQuantityInput );  
+    
+    theBtClear.setBounds(16, 25 + 60 * 2, 80, 40);
+    theBtClear.addActionListener(e -> cont.doClear());
+    cp.add(theBtClear);
   }
 
   /**

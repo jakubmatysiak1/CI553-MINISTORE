@@ -103,7 +103,40 @@ public class CashierModel extends Observable
    * Buy the product
    */
   
-  //updated doBuy method to include dynamic quantity variable rather than static quantity
+  // doClear method utilised for resetting the cashier and resetting the stock levels back to original amount when cleared
+  public void doClear() {
+	  
+	    String theAction = "";
+
+	    try {
+	        if (theBasket != null && theBasket.size() > 0) {
+	            for (Product product : theBasket) {
+	                int quantityToRestore = product.getQuantity();
+	                
+	                theStock.addStock(product.getProductNum(), quantityToRestore);
+	            }
+	            theBasket = null;
+	            
+	            theAction = "Order cleared and stock levels restored";
+	            
+	        } else {
+	        	
+	            theAction = "No items in the basket to clear";
+	        }
+	        
+	    } catch (StockException e) {
+	        DEBUG.error("CashierModel.doClear\n%s", e.getMessage());
+	        theAction = e.getMessage();
+	    }
+
+	    theBasket = null;
+	    
+	    setChanged();
+	    
+	    notifyObservers(theAction);
+	}
+
+  // updated doBuy method to include dynamic quantity variable rather than static quantity
   // developed by jakub
   
   public void doBuy(int quantity)
