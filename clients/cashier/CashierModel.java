@@ -22,11 +22,27 @@ public class CashierModel extends Observable
 
   private StockReadWriter theStock     = null;
   private OrderProcessing theOrder     = null;
+  
+  // variables required for junit testing
+  private int checkedQuantity = 0;
+  private int purchasedQuantity = 0;
+  private boolean cleared = false;
+  private boolean bought = false;
 
   /**
    * Construct the model of the Cashier
    * @param mf The factory to create the connection objects
    */
+  
+  // default consturctor for testing
+  // developed by jakub
+  public CashierModel() {
+
+	  this.checkedQuantity = 0;
+      this.purchasedQuantity = 0;
+      this.cleared = false;
+      this.bought = false;
+  }
 
   public CashierModel(MiddleFactory mf)
   {
@@ -96,6 +112,7 @@ public class CashierModel extends Observable
             "CashierModel.doCheck", e.getMessage() );
       theAction = e.getMessage();
     }
+    this.checkedQuantity = quantity;
     setChanged(); notifyObservers(theAction);
   }
 
@@ -134,6 +151,9 @@ public class CashierModel extends Observable
 	    setChanged();
 	    
 	    notifyObservers(theAction);
+	    
+        this.cleared = true;
+
 	}
 
   // updated doBuy method to include dynamic quantity variable rather than static quantity
@@ -172,6 +192,9 @@ public class CashierModel extends Observable
     }
     theState = State.process;                   // All Done
     setChanged(); notifyObservers(theAction);
+    
+    this.purchasedQuantity = quantity;
+
   }
   
   /**
@@ -200,6 +223,8 @@ public class CashierModel extends Observable
     }
     theBasket = null;
     setChanged(); notifyObservers(theAction); // Notify
+    
+    this.bought = true;
   }
 
   /**
@@ -241,6 +266,23 @@ public class CashierModel extends Observable
   protected BetterBasket makeBasket()
   {
     return new BetterBasket();
+  }
+  
+  // methods for getters to junit testing
+  public int getCheckedQuantity() {
+      return checkedQuantity;
+  }
+
+  public int getPurchasedQuantity() {
+      return purchasedQuantity;
+  }
+
+  public boolean isCleared() {
+      return cleared;
+  }
+
+  public boolean isBought() {
+      return bought;
   }
 }
   

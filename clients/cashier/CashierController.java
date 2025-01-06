@@ -34,7 +34,7 @@ public class CashierController
 		  int quantity = Integer.parseInt(quantity_str.trim());
 		  model.doCheck(pn, quantity);
 	  } catch (NumberFormatException e) {
-		  view.update(null, "Invalid quantity: " + quantity_str);
+		  view.updateErrorMessage(model, "Invalid quantity: " + quantity_str);
 	  }
   }
   
@@ -53,7 +53,7 @@ public class CashierController
 		  int quantity = Integer.parseInt(quantity_str.trim());
 		  model.doBuy(quantity);
 	  } catch (NumberFormatException e) {
-		  view.update(null, "Invalid quantity: " + quantity_str);
+		  view.updateErrorMessage(model, "Invalid quantity: " + quantity_str);
 	  }
   }
   

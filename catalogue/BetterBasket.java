@@ -5,11 +5,19 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * A BetterBasket class that extends Basket.
- * Provides functionality to merge products with the same product number
- * and sort the items based on the product number.
+ * A BetterBasket class that extends the Basket class.
+ * This class provides additional functionality to merge products with the same 
+ * product number and manage the basket's content using a HashMap.
  * 
- * @author Your Name
+ * <p>
+ * Features:
+ * <ul>
+ *     <li>Merges quantities of products with the same product number when added.</li>
+ *     <li>Overrides basket methods for add, remove, and clear operations.</li>
+ * </ul>
+ * </p>
+ * 
+ * @author Jakub Matysiak
  * @version 1.0
  */
 public class BetterBasket extends Basket implements Serializable {
@@ -36,6 +44,14 @@ public class BetterBasket extends Basket implements Serializable {
         }
     }
     
+    /**
+     * Removes a product from the basket. If the product exists in the hashmap,
+     * it is also removed from there.
+     * 
+     * @param pr the product to be removed
+     * @return if the product was removed; otherwise
+     */
+    
     @Override
     public boolean remove(Object pr) {
     	
@@ -47,11 +63,22 @@ public class BetterBasket extends Basket implements Serializable {
         return super.remove(pr);
     }
     
+    /**
+     * Clears all items from the basket, used for tracking products.
+     */
+    
     @Override
     public void clear_basket() {
     	product_map.clear();
         super.clear_basket();
     }
+    
+    /**
+     * Gets the details of the basket
+     * This method uses the parent class implementation.
+     * 
+     * @return a string representation of the basket's details
+     */
     
     @Override
     public String getDetails() {

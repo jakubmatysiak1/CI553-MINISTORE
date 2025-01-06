@@ -41,6 +41,8 @@ public class CashierView implements Observer
   private OrderProcessing theOrder     = null;
   private CashierController cont       = null;
   
+  private String lastMessage;
+  
   /**
    * Construct the view
    * @param rpc   Window in which to construct
@@ -48,6 +50,12 @@ public class CashierView implements Observer
    * @param x     x-coordinate of position of window on screen 
    * @param y     y-coordinate of position of window on screen  
    */
+  
+  // default constructor for testing
+  // developed by jakub
+  public CashierView() {
+      this.lastMessage = "";
+  }
           
   public CashierView(  RootPaneContainer rpc,  MiddleFactory mf, int x, int y  )
   {
@@ -144,6 +152,14 @@ public class CashierView implements Observer
       theOutput.setText( basket.getDetails() );
     
     theInput.requestFocus();               // Focus is here
+  }
+
+  public void updateErrorMessage(Object model, String message) {
+      this.lastMessage = message;
+  }
+
+  public String getLastMessage() {
+      return this.lastMessage;
   }
 
 }
