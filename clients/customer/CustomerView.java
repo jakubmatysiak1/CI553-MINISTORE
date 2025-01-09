@@ -137,6 +137,7 @@ public class CustomerView implements Observer
 	    } else {
 	        suggestionListModel.clear();
 	    }
+	    System.out.print("Update suggestions method executed!");
 	}
 
 	public void displaySuggestions(String[] suggestions) {
@@ -144,6 +145,7 @@ public class CustomerView implements Observer
 	    for (String suggestion : suggestions) {
 	        suggestionListModel.addElement(suggestion);
 	    }
+	    System.out.print("Display suggestions method executed!");
 	}
 
    /**

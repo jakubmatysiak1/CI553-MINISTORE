@@ -43,6 +43,7 @@ public class CustomerController
   public void fetchSuggestions(String partialInput) {
 	    String[] suggestions = model.getSuggestions(partialInput);
 	    view.displaySuggestions(suggestions);
+	    System.out.print("Fetch suggestions method executed!");
 	}
   
 }

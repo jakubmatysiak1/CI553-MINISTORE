@@ -84,6 +84,9 @@ public class BetterBasket extends Basket implements Serializable {
     public String getDetails() {
         return super.getDetails();
     }
+    
+    // comments and code developed by jakub
+    // better basket branch
 }
 
 
