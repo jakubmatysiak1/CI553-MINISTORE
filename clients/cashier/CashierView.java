@@ -34,8 +34,8 @@ public class CashierView implements Observer
   
   // input field for buying multiple products, quantity, and clearing the cashier
   // developed by jakub
-  private final JTextField  theQuantityInput = new JTextField();
-  private final JButton theBtClear = new JButton("Clear");
+  private final JTextField  theQuantityInput = new JTextField(); // field for qt input
+  private final JButton theBtClear = new JButton("Clear"); // btn to clear orders
 
   private StockReadWriter theStock     = null;
   private OrderProcessing theOrder     = null;
@@ -54,7 +54,7 @@ public class CashierView implements Observer
   // default constructor for testing
   // developed by jakub
   public CashierView() {
-      this.lastMessage = "";
+      this.lastMessage = ""; // cashier object to empty
   }
           
   public CashierView(  RootPaneContainer rpc,  MiddleFactory mf, int x, int y  )
@@ -115,12 +115,12 @@ public class CashierView implements Observer
     
     // initialization of the buttons
     // developed by jakub
-    theQuantityInput.setBounds( 250, 50, 130, 40 );
+    theQuantityInput.setBounds( 250, 50, 130, 40 ); // qt field
     theQuantityInput.setText("");                    
     cp.add( theQuantityInput );  
     
     theBtClear.setBounds(16, 25 + 60 * 2, 80, 40);
-    theBtClear.addActionListener(e -> cont.doClear());
+    theBtClear.addActionListener(e -> cont.doClear()); // clear btn
     cp.add(theBtClear);
   }
 

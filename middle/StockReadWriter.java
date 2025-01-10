@@ -38,4 +38,5 @@ public interface StockReadWriter extends StockReader
   
   // method for adding new products and creating them
   void addProduct(Product product) throws StockException;
+  // uses the product object which holds all the values, name, price, qt, image etc
 }

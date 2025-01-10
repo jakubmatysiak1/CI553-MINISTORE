@@ -34,9 +34,11 @@ public class StockRW extends StockR implements StockReadWriter
 	    // code to ensure the database column and rows are updated
 	    // developed by jakub
 	    try {
-	        ensureSchemaUpdated();
+	        ensureSchemaUpdated(); // attempt to create the imagepath column
 	    } catch (SQLException e) {
 	        throw new StockException("Failed to update schema: " + e.getMessage());
+	        // if already created
+	        // output in console / catch error
 	    }
 	}
   
@@ -142,56 +144,62 @@ public class StockRW extends StockR implements StockReadWriter
   // developed by jakub
   @Override
   public synchronized void addProduct(Product product) throws StockException {
+	  
       try {
 
-          if (exists(product.getProductNum())) {
+          if (exists(product.getProductNum())) { // check for existing productnum already
               throw new StockException("Product already exists: " + product.getProductNum());
+              // if exists, catch error
           }
 
-
+          
+          // sql query to create the new product in the database
+          // utilises insert to add the product
           String sqlProduct = String.format(
               "INSERT INTO ProductTable (productNo, description, price, imagePath) VALUES ('%s', '%s', %.2f, '%s')",
               product.getProductNum(),
               product.getDescription(),
               product.getPrice(),
-              product.getImagePath() != null ? product.getImagePath() : "NULL"
+              product.getImagePath() != null ? product.getImagePath() : "NULL" // if image is null, set the field to null in db
           );
-          getStatementObject().executeUpdate(sqlProduct);
+          getStatementObject().executeUpdate(sqlProduct); // execute the sql
 
 
           String sqlStock = String.format(
-              "INSERT INTO StockTable (productNo, stockLevel) VALUES ('%s', %d)",
-              product.getProductNum(),
-              product.getQuantity()
+              "INSERT INTO StockTable (productNo, stockLevel) VALUES ('%s', %d)", // query to inset stock
+              product.getProductNum(), // retreive product id from create window
+              product.getQuantity() // retreive quantiy from create window
           );
-          getStatementObject().executeUpdate(sqlStock);
+          getStatementObject().executeUpdate(sqlStock); // update the db with the quantity
 
-          System.out.println("Product added successfully: " + product.getProductNum());
+          System.out.println("Product added successfully: " + product.getProductNum()); // output if success
+          
       } catch (SQLException e) {
-          throw new StockException("Failed to add product: " + e.getMessage());
+          throw new StockException("Failed to add product: " + e.getMessage()); // catch error if failed
       }
   }
   
   // ensures db contains the neccessary fields required for new product creation
   // developed by jakub
   private void ensureSchemaUpdated() throws SQLException {
+	  
 	    try {
 	        ResultSet rs = getConnectionObject()
 	            .getMetaData()
-	            .getColumns(null, null, "PRODUCTTABLE", "IMAGEPATH");
+	            .getColumns(null, null, "PRODUCTTABLE", "IMAGEPATH"); // check for imagepath column
 	        
-	        if (!rs.next()) {
-	            getStatementObject().executeUpdate("ALTER TABLE ProductTable ADD COLUMN imagePath VARCHAR(255)");
-	            System.out.println("imagePath column added to ProductTable.");
+	        if (!rs.next()) { // if column does not exist...
+	            getStatementObject().executeUpdate("ALTER TABLE ProductTable ADD COLUMN imagePath VARCHAR(255)"); // cretae the column in the db
+	            System.out.println("imagePath column added to ProductTable."); // output success
 	            
 	        } else {
-	            System.out.println("imagePath column already exists in ProductTable.");
+	            System.out.println("imagePath column already exists in ProductTable."); // if exists, this is the msg that outputs informing it already exists
 	        }
 	        
 	    } catch (SQLException e) {
 	    	
-	        if (e.getSQLState().equals("42X14")) {
-	            System.out.println("imagePath column already exists.");
+	        if (e.getSQLState().equals("42X14")) { // state 42x14 meaning column already exists
+	            System.out.println("imagePath column already exists."); // catch error from db
 	            
 	        } else {
 	            throw e;

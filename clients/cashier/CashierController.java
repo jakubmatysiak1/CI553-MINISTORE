@@ -31,17 +31,17 @@ public class CashierController
   public void doCheck( String pn, String quantity_str)
   {
 	  try {
-		  int quantity = Integer.parseInt(quantity_str.trim());
-		  model.doCheck(pn, quantity);
+		  int quantity = Integer.parseInt(quantity_str.trim()); // convert to int
+		  model.doCheck(pn, quantity); // checks for product num with requested quantity int
 	  } catch (NumberFormatException e) {
-		  view.updateErrorMessage(model, "Invalid quantity: " + quantity_str);
+		  view.updateErrorMessage(model, "Invalid quantity: " + quantity_str); // catch error if invalid (tested)
 	  }
   }
   
   // method to clear the cashier using button
   // developed by jakub
   public void doClear() {
-	    model.doClear();
+	    model.doClear(); // clears model object
 	}
 
    /**

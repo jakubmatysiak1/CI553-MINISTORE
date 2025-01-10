@@ -153,7 +153,8 @@ public class BackDoorModel extends Observable
   // method to return the stock
   // developed by jakub
   public StockReadWriter getStock() {
-	    return theStock;
+	  
+	    return theStock; // returns readstockwriter object stored in variable
 	}
 }
 

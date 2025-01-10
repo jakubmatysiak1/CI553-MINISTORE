@@ -122,19 +122,25 @@ public class F_StockRW extends F_StockR
   // method to establish connection to sql database
   // developed by jakub
   protected Connection getConnectionObject() throws SQLException {
-	    String url = "jdbc:derby:catshop.db";
-	    return DriverManager.getConnection(url);
+	  
+	    String url = "jdbc:derby:catshop.db"; // points to db
+	    
+	    return DriverManager.getConnection(url); // estalbishes connection with db
 	}
   
   // method to add product to the sql database
   // developed by jakub
   @Override
   public void addProduct(Product product) throws StockException {
-      try (Connection conn = getConnectionObject();
+	  
+      try (Connection conn = getConnectionObject(); // ensures connection & statement are closed auto after operation
+    		  
+    		  // connection is the connection to db
            Statement stmt = conn.createStatement()) {
+    	  // statemenet is an object for using sql statements
 
           if (exists(product.getProductNum())) {
-              throw new StockException("Product already exists: " + product.getProductNum());
+              throw new StockException("Product already exists: " + product.getProductNum()); // check for product already exists
           }
 
           String insertProductSQL = String.format(
@@ -145,6 +151,8 @@ public class F_StockRW extends F_StockR
               product.getImagePath() != null ? product.getImagePath() : "NULL"
           );
           stmt.executeUpdate(insertProductSQL);
+          // uses a insert query
+          // adds the product into the database
 
           String insertStockSQL = String.format(
               "INSERT INTO StockTable (productNo, stockLevel) VALUES ('%s', %d)",
@@ -152,10 +160,14 @@ public class F_StockRW extends F_StockR
               product.getQuantity()
           );
           stmt.executeUpdate(insertStockSQL);
+          // insert stock amount to the provided id 
+          
+          // both sql queires executed using statmenet object
 
-          System.out.println("Product added successfully: " + product.getProductNum());
+          System.out.println("Product added successfully: " + product.getProductNum()); // display if successful
+          
       } catch (SQLException e) {
-          throw new StockException("Failed to add product: " + e.getMessage());
+          throw new StockException("Failed to add product: " + e.getMessage()); // catch error
       }
   }
 

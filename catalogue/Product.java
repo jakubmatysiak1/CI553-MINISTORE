@@ -44,7 +44,7 @@ public class Product implements Serializable
 	    this.theDescription = description;
 	    this.thePrice = price;
 	    this.theQuantity = quantity;
-	    this.imagePath = null;
+	    this.imagePath = null; // set to null
 	}
   
   public String getProductNum()  { return theProductNum; }
@@ -72,7 +72,10 @@ public class Product implements Serializable
     theQuantity = aQuantity;
   }
   
+  // method to return image path
+  // developed by jakub
   public String getImagePath() {
+	  
       return imagePath;
   }
   
@@ -80,6 +83,7 @@ public class Product implements Serializable
   // functionality to process image path
   // developed by jakub
   public void setImagePath(String anImagePath) {
+	  
       imagePath = anImagePath;
   }
   
@@ -87,7 +91,7 @@ public class Product implements Serializable
   // developed by jakub
   @Override
   public String toString() {
-      return String.format("Product[ID=%s, Description=%s, Price=%.2f, Quantity=%d, Image=%s]",
+      return String.format("Product[ID=%s, Description=%s, Price=%.2f, Quantity=%d, Image=%s]", // formatting
               theProductNum, theDescription, thePrice, theQuantity, imagePath);
   }
 }

@@ -179,17 +179,23 @@ public class StockR implements StockReader
   @Override
   public synchronized List<Product> getMatchingProducts(String partialInput) throws StockException {
 	  
-      List<Product> matchingProducts = new ArrayList<>();
+      List<Product> matchingProducts = new ArrayList<>(); // store prodcuts array
+      
       try {
           String query = "SELECT ProductTable.productNo, description, price, stockLevel " +
                          "FROM ProductTable " +
                          "JOIN StockTable ON ProductTable.productNo = StockTable.productNo " +
                          "WHERE ProductTable.productNo LIKE ?";
+          
+          // sql query joining producttable and stocktable together
+          // looks for product which matching partial input
+          // utilises like clause
 
-          PreparedStatement stmt = getConnectionObject().prepareStatement(query);
+          PreparedStatement stmt = getConnectionObject().prepareStatement(query); // execute query
           stmt.setString(1, partialInput + "%");
-          ResultSet rs = stmt.executeQuery();
+          ResultSet rs = stmt.executeQuery(); // collect result
 
+          // loops through the sql results and creates product objects from the data collected
           while (rs.next()) {
               Product product = new Product(
                   rs.getString("productNo"),
@@ -197,16 +203,18 @@ public class StockR implements StockReader
                   rs.getDouble("price"),
                   rs.getInt("stockLevel")
               );
-              matchingProducts.add(product);
+              matchingProducts.add(product); // adds product to the array
+              
           }
           
           rs.close();
           stmt.close();
+          // close connection
           
       } catch (SQLException e) {
-          throw new StockException("SQL getMatchingProducts: " + e.getMessage());
+          throw new StockException("SQL getMatchingProducts: " + e.getMessage()); // catch error
       }
       
-      return matchingProducts;
+      return matchingProducts; // return list
   }
 }

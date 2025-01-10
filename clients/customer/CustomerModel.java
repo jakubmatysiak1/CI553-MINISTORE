@@ -136,18 +136,21 @@ public class CustomerModel extends Observable
   
   // method to fetch suggestions based on query
   // developed by jakub
-  
   public String[] getSuggestions(String partialInput) {
-	    List<String> suggestions = new ArrayList<>();
+	  
+	    List<String> suggestions = new ArrayList<>(); // creates suggestion array
+	    
 	    try {
-	        List<Product> products = theStock.getMatchingProducts(partialInput);
+	        List<Product> products = theStock.getMatchingProducts(partialInput); // retrives a list of products which matches the partial input
 	        for (Product product : products) {
-	            suggestions.add(product.getProductNum());
+	            suggestions.add(product.getProductNum()); // matching list matching partial input added to suggestion list
 	        }
 	    } catch (StockException e) {
-	        DEBUG.error("Error fetching suggestions: %s", e.getMessage());
+	        DEBUG.error("Error fetching suggestions: %s", e.getMessage()); // catch error
 	    }
-	    return suggestions.toArray(new String[0]);
+	    
+	    return suggestions.toArray(new String[0]); // converts suggestion list to array of strings
+	    // used for further processing
 	}
 }
 

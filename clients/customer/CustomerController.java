@@ -39,12 +39,14 @@ public class CustomerController
   
   // method to fetch for suggestions
   // developed by jakub
-  
   public void fetchSuggestions(String partialInput) {
-	    String[] suggestions = model.getSuggestions(partialInput);
-	    view.displaySuggestions(suggestions);
-	    System.out.print("Fetch suggestions method executed!");
-	}
+	  
+	    String[] suggestions = model.getSuggestions(partialInput); // call array of suggestions
+	    
+	    view.displaySuggestions(suggestions); // pass suggestions from array to user
+	    
+	    System.out.print("Fetch suggestions method executed!"); // print debugging i utilised
+  }
   
 }
 

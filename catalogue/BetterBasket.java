@@ -32,9 +32,9 @@ public class BetterBasket extends Basket implements Serializable {
     @Override
     public boolean add(Product pr) {
     	
-        String product_number = pr.getProductNum();
+        String product_number = pr.getProductNum(); // retrive product num
 
-        if (product_map.containsKey(product_number)) {
+        if (product_map.containsKey(product_number)) { // check for match with key product num
             Product existing_product = product_map.get(product_number);
             existing_product.setQuantity(existing_product.getQuantity() + pr.getQuantity());
             return true;
@@ -68,9 +68,9 @@ public class BetterBasket extends Basket implements Serializable {
      */
     
     @Override
-    public void clear_basket() {
+    public void clearBasket() {
     	product_map.clear();
-        super.clear_basket();
+        super.clearBasket();
     }
     
     /**
@@ -84,9 +84,6 @@ public class BetterBasket extends Basket implements Serializable {
     public String getDetails() {
         return super.getDetails();
     }
-    
-    // comments and code developed by jakub
-    // better basket branch
 }
 
 

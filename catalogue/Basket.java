@@ -63,17 +63,19 @@ public class Basket extends ArrayList<Product> implements Serializable
   // functions to add, return and clear products from basket
   // add functionality to betterBaskwet
   // developed by jakub
-  
-  public void clear_basket() {
+  public void clearBasket() {
+	  
       this.clear();
   }
   
   public ArrayList<Product> getProducts() {
-      return new ArrayList<>(this);
+	  
+      return new ArrayList<>(this); // create new list for products
   }
   
   public void addProduct(Product product) {
-      this.add(product);
+	  
+      this.add(product); // adds current product to list
   }
 
   /**

@@ -43,7 +43,6 @@ public class CustomerView implements Observer
   
   // jlist and defaultlistmodel utilised for displaying suggestions
   // developed by jakub
-  
   private JList<String> suggestionList = new JList<>();
   private DefaultListModel<String> suggestionListModel = new DefaultListModel<>();
 
@@ -110,11 +109,11 @@ public class CustomerView implements Observer
     // suggestion list setup, initializing needed components
     // developed by jakub
    
-    suggestionList.setModel(suggestionListModel);
-    suggestionList.setBounds(110, 90, 270, 100);
+    suggestionList.setModel(suggestionListModel); // set to suggestion list to populate with data
+    suggestionList.setBounds(110, 90, 270, 100); // location window params
     cp.add(suggestionList);
 
-    suggestionList.addListSelectionListener(e -> {
+    suggestionList.addListSelectionListener(e -> { // listener for interactions
         if (!e.getValueIsAdjusting() && suggestionList.getSelectedValue() != null) {
             theInput.setText(suggestionList.getSelectedValue());
         }
@@ -122,30 +121,36 @@ public class CustomerView implements Observer
 
     theInput.getDocument().addDocumentListener(new DocumentListener() {
         @Override
-        public void insertUpdate(DocumentEvent e) { updateSuggestions(); }
+        public void insertUpdate(DocumentEvent e) { updateSuggestions(); } // refresh suggestions when text added
         @Override
-        public void removeUpdate(DocumentEvent e) { updateSuggestions(); }
+        public void removeUpdate(DocumentEvent e) { updateSuggestions(); } // refresh suggestion when text delected
         @Override
-        public void changedUpdate(DocumentEvent e) { updateSuggestions(); }
+        public void changedUpdate(DocumentEvent e) { updateSuggestions(); } // refresh suggestion if attribute changes
     });
   }
   
   private void updateSuggestions() {
-	    String text = theInput.getText();
-	    if (text.length() > 0) {
-	        cont.fetchSuggestions(text);
+	  
+	    String text = theInput.getText(); // retreive current input
+	    
+	    if (text.length() > 0) { // if text not empty
+	        cont.fetchSuggestions(text); // check for suggestion with current text
 	    } else {
-	        suggestionListModel.clear();
+	        suggestionListModel.clear(); // if empty clear 
 	    }
-	    System.out.print("Update suggestions method executed!");
+	    
+	    System.out.print("Update suggestions method executed!"); // print debugging
 	}
 
 	public void displaySuggestions(String[] suggestions) {
-	    suggestionListModel.clear();
-	    for (String suggestion : suggestions) {
-	        suggestionListModel.addElement(suggestion);
+		
+	    suggestionListModel.clear(); // clear current suggestions
+	    
+	    for (String suggestion : suggestions) { // loop through suggestion array
+	        suggestionListModel.addElement(suggestion); // add suggestion to the display to display
 	    }
-	    System.out.print("Display suggestions method executed!");
+	    
+	    System.out.print("Display suggestions method executed!"); // print debugging
 	}
 
    /**

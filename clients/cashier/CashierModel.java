@@ -34,7 +34,7 @@ public class CashierModel extends Observable
    * @param mf The factory to create the connection objects
    */
   
-  // default consturctor for testing
+  // testing consturctor
   // developed by jakub
   public CashierModel() {
 
@@ -42,7 +42,8 @@ public class CashierModel extends Observable
       this.purchasedQuantity = 0;
       this.cleared = false;
       this.bought = false;
-  }
+  } // constructor creates cashier model object
+  // utilised for testing
 
   public CashierModel(MiddleFactory mf)
   {
@@ -64,8 +65,8 @@ public class CashierModel extends Observable
   
   // updated to utilise betterBasket
   // by jakub
-  public BetterBasket getBasket() // Updated return type
-  {
+  public BetterBasket getBasket()  {
+	  
       return theBasket;
   }
 
@@ -76,7 +77,6 @@ public class CashierModel extends Observable
   
   // updated doCheck method to include dynamic quantity variable rather than static quantity
   // developed by jakub
-  
   public void doCheck(String productNum, int quantity )
   {
     String theAction = "";
@@ -126,23 +126,23 @@ public class CashierModel extends Observable
 	    String theAction = "";
 
 	    try {
-	        if (theBasket != null && theBasket.size() > 0) {
+	        if (theBasket != null && theBasket.size() > 0) { // basket check
 	            for (Product product : theBasket) {
 	                int quantityToRestore = product.getQuantity();
 	                
-	                theStock.addStock(product.getProductNum(), quantityToRestore);
+	                theStock.addStock(product.getProductNum(), quantityToRestore); // restore quantity to the stock
 	            }
 	            theBasket = null;
 	            
-	            theAction = "Order cleared and stock levels restored";
+	            theAction = "Order cleared and stock levels restored"; // success msg
 	            
 	        } else {
 	        	
-	            theAction = "No items in the basket to clear";
+	            theAction = "No items in the basket to clear"; // basket already empty msg
 	        }
 	        
 	    } catch (StockException e) {
-	        DEBUG.error("CashierModel.doClear\n%s", e.getMessage());
+	        DEBUG.error("CashierModel.doClear\n%s", e.getMessage()); // catch error
 	        theAction = e.getMessage();
 	    }
 
@@ -150,7 +150,7 @@ public class CashierModel extends Observable
 	    
 	    setChanged();
 	    
-	    notifyObservers(theAction);
+	    notifyObservers(theAction); // notify observer for change
 	    
         this.cleared = true;
 
@@ -158,7 +158,6 @@ public class CashierModel extends Observable
 
   // updated doBuy method to include dynamic quantity variable rather than static quantity
   // developed by jakub
-  
   public void doBuy(int quantity)
   {
     String theAction = "";
@@ -263,26 +262,30 @@ public class CashierModel extends Observable
   
   // updated to utilise betterBasket
   // by jakub
-  protected BetterBasket makeBasket()
-  {
+  protected BetterBasket makeBasket() {
+	  
     return new BetterBasket();
   }
   
   // methods for getters to junit testing
   public int getCheckedQuantity() {
-      return checkedQuantity;
+	  
+      return checkedQuantity; // return checked qt
   }
 
   public int getPurchasedQuantity() {
-      return purchasedQuantity;
+	  
+      return purchasedQuantity; // return purchased qt
   }
 
   public boolean isCleared() {
-      return cleared;
+	  
+      return cleared; // return cleared itmes
   }
 
   public boolean isBought() {
-      return bought;
+	  
+      return bought; // return bought items
   }
 }
   

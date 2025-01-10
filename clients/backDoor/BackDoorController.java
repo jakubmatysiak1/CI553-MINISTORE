@@ -51,7 +51,9 @@ public class BackDoorController
   // new method to open a window for creating new prodcuts
   // developed by jakub
   public void openNewProduct() {
-	    NewProduct newProductWindow = new NewProduct(model);
+	  
+	    NewProduct newProductWindow = new NewProduct(model); // launches window passing model as object
+	    
 	    newProductWindow.setVisible(true);
 	}
 }
